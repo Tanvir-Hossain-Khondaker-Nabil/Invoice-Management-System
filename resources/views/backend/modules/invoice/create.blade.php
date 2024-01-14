@@ -47,10 +47,8 @@
                   </th>
                   <th>Qty</th>
                   @if (Cart::content()->count() > 0)
-                  <th></th>                     
                   @endif                            
                   <th>Price</th>
-                  <th>Discount</th>
                   <th>Total</th>
                   <th>
                     @if (Cart::content()->count() > 0)
@@ -74,22 +72,18 @@
                   </td>
                   <form action="{{ route('cart.update',$item->rowId) }}" method="post">
                     @csrf
-                    <td>
+                    <td class="d-flex gap-3">
                       <input type="number" name="quantity" onchange="Calc(this)" class="form-control"
                         placeholder="Quantity" value="{{ @$item->qty }}" id="quantity">
-                    </td>
-                    <td>
+
                       <button type="submit" class="btn btn-sm "><i
                           class="fa-solid fa-check fa-xl text-success"></i></button>
+                          
                     </td>
                   </form>
                   <td>
                     <input type="number" name="unitprice" onchange="Calc(this)" class="form-control"
                       placeholder="Unit Price" value="{{ @$item->price }}" id="unitprice">
-                  </td>
-                  <td>
-                    <input type="number" name="discount" onchange="Calc(this)" class="form-control" id="discount"
-                      placeholder="Discount">
                   </td>
                   <td>
                     <input type="number" name="total" class="form-control" value="{{ @$item->price*@$item->qty }}"
@@ -107,7 +101,7 @@
               <tbody>
                 @if (Cart::content()->count() > 0)
                 <tr>
-                  <td colspan="4"></td>
+                  <td colspan="2"></td>
                   <td></td>
                   <td></td>                  
                   <td>
@@ -116,68 +110,53 @@
                 </tr>
                 @endif
                 <tr>
-                  <td colspan="4"></td>
+                  @if (Cart::content()->count() > 0)
+                  <td colspan="2"></td>
+                  @else
+                  <td colspan="3"></td>
+                  @endif
                   <td>
                     <strong>Sub Total:</strong>
                   </td>
                   <td>
-                    <input type="text" name="subtotal" class="form-control" value="0.00" onclick="SubTotals()"
+                    <input type="text" name="subtotal" class="form-control" value="{{ Cart::subtotal() }}"
                       id="subtotal" readonly>
                   </td>
-                  @if (Cart::content()->count() > 0)
-                  <td></td>
-                  @endif
                 </tr>
                 <tr>
-                  <td colspan="4"></td>
+                  @if (Cart::content()->count() > 0)
+                  <td colspan="2"></td>
+                  @else
+                  <td colspan="3"></td>
+                  @endif
                   <td>
                     <strong>VAT(%):</strong>
                   </td>
                   <td>
-                    <input type="text" name="" class="form-control" id="vat">
+                    <input type="text" name="" class="form-control" id="vat" value="{{ Cart::tax() }}">
                   </td>
-                  @if (Cart::content()->count() > 0)
-                  <td></td>
-                  @endif
                 </tr>
-                <tr>
-                  <td colspan="4"></td>
+                <tr>                  
+                  @if (Cart::content()->count() > 0)
+                  <td colspan="2"></td>
+                  @else
+                  <td colspan="3"></td>
+                  @endif
                   <td>
                     <strong>VAT+Sub Total:</strong>
                   </td>
                   <td>
-                    <input type="text" name="" class="form-control" id="vatsubtotal" value="0.00" readonly>
+                    <input type="text" name="" class="form-control" id="vatsubtotal" onclick="tax" value="{{ Cart::total() }}" readonly>
                   </td>
-                  @if (Cart::content()->count() > 0)
-                  <td></td>
-                  @endif
-                </tr>
-                <tr>
-                  <td colspan="4"></td>
-                  <td>
-                    <strong>Paid:</strong>
-                  </td>
-                  <td>
-                    <input type="text" name="" class="form-control" id="paid">
-                  </td>
-                  @if (Cart::content()->count() > 0)
-                  <td></td>
-                  @endif
-                </tr>
-                <tr>
-                  <td colspan="4"></td>
-                  <td>
-                    <strong>Due:</strong>
-                  </td>
-                  <td>
-                    <input type="text" name="" class="form-control" id="due" value="0.00" readonly>
-                  </td>
-                  @if (Cart::content()->count() > 0)
-                  <td></td>
-                  @endif
                 </tr>
               </tbody>
             </table>
+
+
+
+
+
+
 
           </div>
         </div>
@@ -186,25 +165,30 @@
           <div class="card p-3 shadow-lg">
             <div class="row">
               <div class="col-md-4">
-                <select name="cus_id" id="" class="form-select  text-white" style="background-color: #1fb185;">
-                  <option value="">Choose Customer</option>
-                  @if (isset($customers))
-                  @foreach ($customers as $customer)
-                  <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                  @endforeach
-                  @endif
+                <label class="form-label">Select Customer</label>
+                <select class="form-control select2" name="cus_id">
+                    <option>Select</option>
+                    {{-- <optgroup label="Alaskan/Hawaiian Time Zone"> --}}
+                      @if (isset($customers))
+                      @foreach ($customers as $customer)
+                      <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                      @endforeach
+                      @endif
                 </select>
                 @error('cus_id')
                 <code>*{{$message}}</code>
                 @enderror
               </div>
               <div class="col-md-4">
-                <input type="number" class="form-control" name="invoice_number" placeholder="Invoice Number">
+                <label class="form-label">Invoice Number</label>
+                
+                <input type="text" class="form-control" value="{{ $invoice_num }}" name="invoice_number" readonly>
                 @error('invoice_number')
                 <code>*{{$message}}</code>
                 @enderror
               </div>
-              <div class="col-md-4">                
+              <div class="col-md-4">    
+                <label class="form-label">Invoice Date</label>            
                 <input type="text" value="{{ date('Y') }}" name="invoice_date" readonly class="form-control">
               </div>
             </div>
@@ -222,6 +206,8 @@
 
 @endsection
 @push('css')
+<link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
 <style>
   .dt-responsive td,
   .dt-responsive th {
@@ -274,86 +260,88 @@
 @push('js')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
   integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script>
-  function Calc(e) {
-    var index = $(e).parent().parent().index();
-    var quantity = document.getElementsByName('quantity')[index].value;
-    var unitprice = document.getElementsByName('unitprice')[index].value;
-    var discount = document.getElementsByName('discount')[index].value;
-
-    var dec = (discount / 100).toFixed(2);
-
-    if (discount != '') {
-      var total_value = (quantity * unitprice);
-      var mult = total_value * dec;
-      var total = (total_value - mult);
-      document.getElementsByName('total')[index].value = total;
-    } else {
-      var total = (quantity * unitprice);
-      document.getElementsByName('total')[index].value = total;
+  <script>
+    function Calc(e) {
+      var index = $(e).parent().parent().index();
+      var quantity = document.getElementsByName('quantity')[index].value;
+      var unitprice = document.getElementsByName('unitprice')[index].value;
+      var discount = document.getElementsByName('discount')[index].value;
+  
+      var dec = (discount / 100).toFixed(2);
+  
+      if (discount != '') {
+        var total_value = (quantity * unitprice);
+        var mult = total_value * dec;
+        var total = (total_value - mult);
+        document.getElementsByName('total')[index].value = total;
+      } else {
+        var total = (quantity * unitprice);
+        document.getElementsByName('total')[index].value = total;
+      }
+  
+      SubTotals()
     }
-
-    SubTotals()
-  }
-
-  function SubTotals() {
-    var sum = 0
-    var totals = document.getElementsByName('total')
-    for (let index = 0; index < totals.length; index++) {
-      var total = totals[index].value;
-      sum = +(sum) + +(total);
+  
+    function SubTotals() {
+      var sum = 0
+      var totals = document.getElementsByName('total')
+      for (let index = 0; index < totals.length; index++) {
+        var total = totals[index].value;
+        sum = +(sum) + +(total);
+      }
+      document.getElementById('subtotal').value = sum;
     }
-    document.getElementById('subtotal').value = sum;
-  }
-
-  $('#vat').change(function () {
-    var vInput = this.value;
-    var subtotal = $("#subtotal").val();
-    var vInput = ((vInput * subtotal) / 100);
-    var vstotal = (parseFloat(subtotal) + parseFloat(vInput)).toFixed(1);
-    $('#vatsubtotal').val(vstotal);
-  });
-
-  $('#paid').change(function () {
-    var pInput = this.value;
-    var vatsubtotal = $("#vatsubtotal").val();
-
-    if ((pInput < vatsubtotal) || (pInput <= vatsubtotal)) {
-      $('#paid').val(pInput);
-
-      var dInput = +(vatsubtotal) - +(pInput);
-      $('#due').val(dInput);
-
-      var total = $("#total").val();
+  
+    $('#vat').change(function () {
+      var vInput = this.value;
       var subtotal = $("#subtotal").val();
+      var vInput = ((vInput * subtotal) / 100);
+      var vstotal = (parseFloat(subtotal) + parseFloat(vInput)).toFixed(1);
+      $('#vatsubtotal').val(vstotal);
+    });
+  
+    $('#paid').change(function () {
+      var pInput = this.value;
+      var vatsubtotal = $("#vatsubtotal").val();
+  
+      if ((pInput < vatsubtotal) || (pInput <= vatsubtotal)) {
+        $('#paid').val(pInput);
+  
+        var dInput = +(vatsubtotal) - +(pInput);
+        $('#due').val(dInput);
+  
+        var total = $("#total").val();
+        var subtotal = $("#subtotal").val();
+      }
+    });
+  
+    $("#addRow").click(function () {
+      var v = $("#TRow").clone().appendTo("#TBody");
+      $(v).find("input").val('');
+      $(v).removeClass('d-none');
+    });
+  
+  
+    function DeleteRow(e) {
+      $(e).parent().parent().remove();
     }
-  });
-
-  $("#addRow").click(function () {
-    var v = $("#TRow").clone().appendTo("#TBody");
-    $(v).find("input").val('');
-    $(v).removeClass('d-none');
-  });
-
-
-  function DeleteRow(e) {
-    $(e).parent().parent().remove();
-  }
-  function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-  }
-
-  window.onclick = function (event) {
-    if (!event.target.matches('.dropbtn')) {
-      var dropdowns = document.getElementsByClassName("dropdown-content");
-      var i;
-      for (i = 0; i < dropdowns.length; i++) {
-        var openDropdown = dropdowns[i];
-        if (openDropdown.classList.contains('show')) {
-          openDropdown.classList.remove('show');
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+  
+    window.onclick = function (event) {
+      if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
         }
       }
     }
-  }
-</script>
+  </script>
+<script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
+<script src="{{ asset('assets/js/pages/form-advanced.init.js') }}"></script>
 @endpush

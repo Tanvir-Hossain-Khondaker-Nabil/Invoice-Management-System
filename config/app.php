@@ -169,6 +169,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Jorenvh\Share\Providers\ShareServiceProvider::class,
+        Kudashevs\ShareButtons\Providers\ShareButtonsServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -187,6 +188,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Share' => Jorenvh\Share\ShareFacade::class,
+        'ShareButtons' => Kudashevs\ShareButtons\Facades\ShareButtonsFacade::class,
     ])->toArray(),
     
 

@@ -4,12 +4,14 @@
       <div class="page-content px-3">
          <div class="invoice">
             <!-- begin invoice-company -->
-            <div class="invoice-company text-inverse f-w-600">
-               <span class="pull-right hidden-print">
-               <a href="javascript:;" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-file t-plus-1 text-danger fa-fw fa-lg"></i> Export as PDF</a>
-               <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
-               </span>               
-               Company Name, {{ @$customer->name }}
+            <div class="row invoice-company text-inverse f-w-600">
+               <div class="col-10">
+                  Company Name, {{ @$customer->name }}
+               </div>
+               <div class="col-2 text-end">
+                  <span class="pull-right hidden-print"><a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
+                     </span>
+               </div>           
             </div>
             <!-- end invoice-company -->
             <!-- begin invoice-header -->
@@ -39,7 +41,7 @@
                   <small>Invoice / {{ date('M') }} period</small>
                   <div class="date text-inverse m-t-5">{{ date('M') }} {{ date('d,Y') }}</div>
                   <div class="invoice-detail">
-                     #0000{{ $invoice_number }}DSS<br>
+                     INV#{{ $invoice_number }}<br>
                      Services Product
                   </div>
                </div>
@@ -89,7 +91,7 @@
                            <i class="fa fa-plus text-muted"></i>
                         </div>
                         <div class="sub-price">
-                           <small>VAT (21%)</small>
+                           <small>VAT ({{ $tax->tax }}%)</small>
                            <span class="text-inverse">{{ Cart::tax() }}</span>
                         </div>
                      </div>

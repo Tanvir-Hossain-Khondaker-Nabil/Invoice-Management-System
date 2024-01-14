@@ -169,7 +169,7 @@
                            <i class="fa fa-plus text-muted"></i>
                         </div>
                         <div class="sub-price" style="display: table-cell;vertical-align: middle; padding: 0 20px">
-                           <small style="font-size: 12px;font-weight: 400;display: block">VAT (21%)</small>
+                           <small style="font-size: 12px;font-weight: 400;display: block">VAT ({{ $tax->tax }}%)</small>
                            <span class="text-inverse">{{ Cart::tax() }}</span>
                         </div>
                      </div>

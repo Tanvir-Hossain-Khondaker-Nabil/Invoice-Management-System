@@ -82,7 +82,7 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label for="formrow-inputCity" class="form-label">Postal Code</label>
-                                        <input type="text" name="postal_code" class="form-control" id="formrow-inputCity" value="{{@$product->postal_code}}" placeholder="Enter Your Postal Code">
+                                        <input type="text" name="postal_code" class="form-control" id="formrow-inputCity" value="{{@$customer->postal_code}}" placeholder="Enter Your Postal Code">
                                         @error('postal_code')
                                         <code>*{{$message}}</code>
                                         @enderror
@@ -91,7 +91,7 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label for="formrow-inputCity" class="form-label">Street Address</label>
-                                        <input type="text" name="street_address" class="form-control" id="formrow-inputCity" value="{{@$product->street_address}}" placeholder="Enter Your Street Address">
+                                        <input type="text" name="street_address" class="form-control" id="formrow-inputCity" value="{{@$customer->street_address}}" placeholder="Enter Your Street Address">
                                         @error('street_address')
                                         <code>*{{$message}}</code>
                                         @enderror

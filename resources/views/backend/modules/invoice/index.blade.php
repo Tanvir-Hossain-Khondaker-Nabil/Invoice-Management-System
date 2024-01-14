@@ -93,11 +93,12 @@
                                         class="table table-bordered dt-responsive dataTable no-footer dtr-inline"
                                         role="grid" aria-describedby="datatable_info" style="width: 1013px;">
                                         <thead>
-                                            <tr role="row">
-                                                <th style="width: 159px;">ID</th>
-                                                <th style="width: 242px;">Invoice Number</th>
-                                                <th style="width: 242px;">PDF</th>
-                                                <th style="width: 242px;">Social Media</th>
+                                            <tr role="row">                                                
+                                                <th style="width: 242px;">ID</th>
+                                                <th style="width: 242px;">Customer</th>    
+                                                <th style="width: 242px;">Invoice Number</th>                                            
+                                                <th style="width: 242px;">Amount</th>
+                                                <th style="width: 200px;">Social Media</th>
                                                 <th style="width: 81px;">Action</th>
                                             </tr>
                                         </thead>
@@ -106,20 +107,33 @@
                                             @foreach($invoices as $invoice)
                                             <tr>
                                                 <td>{{$sl++}}</td>
-                                                <td>#0000{{$invoice->invoice_number}}DSS</td>
                                                 @php
-                                                    $share = \Share::page(asset('pdf/'.$invoice->pdf), 'Share title')
-                                                    ->facebook()
-                                                    ->twitter()
-                                                    ->linkedin('Extra linkedin summary can be passed here')                                                    
-                                                    ->whatsapp();
+                                                    $cus_id = $invoice->customer_id;
+                                                    // $cus = App\Models\Customer::where('id',$cus_id)->first();
+                                                    $cus = App\Models\Customer::find($cus_id);
                                                 @endphp
-                                                <td> <button type=submit class="btn btn-sm" 
-                                                    onclick="window.open('{{ asset('pdf/'.$invoice->pdf) }}'); return true;"> <i class="fa-regular fa-file-pdf" style="font-size: 25px"></i> </button>
+                                                <td>{{ @$cus->name }}</td>
+                                                <td>INV#{{@$invoice->invoice_number}}</td>                                                
+                                                <td>{{@$invoice->total}}</td>                                                
+                                                <td class="d-flex gap-1">
+                                                    {{-- <a href="{{ route('email') }}}}">mail</a> --}}
+                                                    <button class="btn clipboard" style="margin-top: -12px;" onclick="copyText('{{ asset('pdf/'.$invoice->pdf) }}')">
+                                                        <i class="fa-regular fa-clipboard" style="font-size: 20px"></i>
+                                                    </button>   
+                                                    <button class="btn" style="margin-top: -12px;">
+                                                        {!!\Share::page(asset('pdf/'.$invoice->pdf), 'Share title')->whatsapp();!!}
+                                                    </button>
+                                                    <button class="btn" style="margin-top: -12px;">
+                                                        {!! ShareButtons::page(asset('pdf/'.$invoice->pdf), 'Page title', [
+                                                        'title' => 'Page title',
+                                                        'rel' => 'nofollow noopener noreferrer',
+                                                    ])
+                                                    ->mailto(); !!}
+                                                    </button>
+                                                    
                                                 </td>
-                                                <td>{!!$share!!}</td>
                                                 <td>
-                                                    <div class="d-flex gap-3">
+                                                    <div class="d-flex gap-2">
                                                         <a href="{{route('invoice.show',$invoice->invoice_number)}}"><button
                                                                 class="btn btn-sm btn-success"><i
                                                                     class="fa-solid fa-eye"></i></button></a>
@@ -134,6 +148,8 @@
                                                                 class="delete btn btn-sm btn-danger mx-1"><i
                                                                     class="fa-solid fa-trash "></i></button>
                                                         </form>
+                                                        <button type=submit class="btn btn-sm" 
+                                                        onclick="window.open('{{ asset('pdf/'.$invoice->pdf) }}'); return true;"> <i class="fa-regular fa-file-pdf" style="font-size: 22px"></i> </button>
                                                     </div>
 
                                                 </td>
@@ -163,14 +179,11 @@
     text-decoration: none;
     list-style: none;
         }
-        #social-links ul li{
-            margin-left: 25px
-        }
-        #social-links ul li a{
+        #social-links ul li a, .clipboard, #social-buttons  a{
             color: #1FB185;
         }
-        #social-links ul li a span{
-            font-size: 18px
+        #social-links ul li a span,#social-buttons a{
+            font-size: 20px
         }
         dl, ol, ul {
             margin-top: 0;
@@ -179,7 +192,6 @@
         ol, ul {
             padding-left:0;
         }
-
     </style>
 @endpush
 @push('js')
@@ -205,6 +217,12 @@
             }
         }
     }
+    function copyText(e) {
+     
+     /* Copy text into clipboard */
+     navigator.clipboard.writeText(e);
+ }
+    
 </script>
 @endpush
 

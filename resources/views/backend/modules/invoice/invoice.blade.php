@@ -4,12 +4,15 @@
 <div class="page-content px-3">
    <div class="invoice">
       <!-- begin invoice-company -->
-      <div class="invoice-company text-inverse f-w-600">
-         <span class="pull-right hidden-print">
-         <a href="javascript:;" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-file t-plus-1 text-danger fa-fw fa-lg"></i> Export as PDF</a>
-         <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
-         </span>               
-         Company Name, {{ @$customer->name }}
+      
+      <div class="row invoice-company text-inverse f-w-600">
+         <div class="col-10">
+            Company Name, {{ @$customer->name }}
+         </div>
+         <div class="col-2 text-end">
+            <span class="pull-right hidden-print"><a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
+               </span>
+         </div>           
       </div>
       <!-- end invoice-company -->
       <!-- begin invoice-header -->
@@ -36,10 +39,10 @@
             </address>
          </div>
          <div class="invoice-date">
-            <small>Invoice / {{ $invoice->month }} period</small>
-            <div class="date text-inverse m-t-5">{{ $invoice->month }} {{ $invoice->date }}</div>
+            <small>Invoice / {{ @$invoice->month }} period</small>
+            <div class="date text-inverse m-t-5">{{ @$invoice->month }} {{ @$invoice->date }}</div>
             <div class="invoice-detail">
-               #0000{{ $invoice->invoice_number }}DSS<br>
+               INV#{{ @$invoice->invoice_number }}<br>
                Services Product
             </div>
          </div>
@@ -80,19 +83,19 @@
                <div class="invoice-price-row">
                   <div class="sub-price">
                      <small>SUBTOTAL</small>
-                     <span class="text-inverse">{{ $invoice->sub_total }}</span>
+                     <span class="text-inverse">{{ @$invoice->sub_total }}</span>
                   </div>
                   <div class="sub-price">
                      <i class="fa fa-plus text-muted"></i>
                   </div>
                   <div class="sub-price">
-                     <small>VAT (21%)</small>
-                     <span class="text-inverse">{{ $invoice->vat }}</span>
+                     <small>VAT ({{ $tax->tax }}%)</small>
+                     <span class="text-inverse">{{ @$invoice->vat }}</span>
                   </div>
                </div>
             </div>
             <div class="invoice-price-right">
-               <small>TOTAL</small> <span class="f-w-600">{{ $invoice->total }}</span>
+               <small>TOTAL</small> <span class="f-w-600">{{ @$invoice->total }}</span>
             </div>
          </div>
          <!-- end invoice-price -->
@@ -148,6 +151,18 @@
 @push('css')
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
+      @media print {
+   .px-3 {
+      padding-right: 0px !important;
+      padding-left: 0px !important;
+   }
+   .invoice-none{
+      display: none
+   }
+   title{
+      display:none
+   }
+}
    body{
       margin-top:20px;
       background:#eee;

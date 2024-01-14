@@ -8,7 +8,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Backend\BackendController;
-
+use App\Http\Controllers\TaxController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,11 +30,13 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'] , function(){
     
     Route::post('pdf',[PDFController::class,'index'])->name('generate.pdf');
     Route::get('/download-pdf',[PDFController::class,'downloadPDF'])->name('download.pdf');
+    Route::post('/update-pdf',[PDFController::class,'updatePDF'])->name('update.pdf');
     
     Route::resource('product',ProductController::class);
     Route::resource('customer',CustomerController::class);
     Route::resource('user',UserController::class);
     Route::resource('invoice',InvoiceController::class);
+    Route::resource('tax',TaxController::class);
 
         Route::get('january-invoice',[InvoiceController::class,'JanuaryInvoice'])->name('january.invoice');
         Route::get('fedruary-invoice',[InvoiceController::class,'FedruaryInvoice'])->name('fedruary.invoice');
