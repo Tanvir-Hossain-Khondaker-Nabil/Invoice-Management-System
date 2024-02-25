@@ -44,7 +44,7 @@
                                         <label for="formrow-email-input" class="form-label">Tax</label>
                                         <input type="text" name="tax" class="form-control" id="formrow-email-input" value="{{@$tax->tax}}" placeholder="Enter Your Tax">
                                         @error('tax')
-                                        <code>*{{$message}}</code>
+                                        <code>*{{$tax}}</code>
                                         @enderror
                                     </div>
                                 </div>

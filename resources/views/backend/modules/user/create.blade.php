@@ -64,7 +64,7 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label for="formrow-inputCity" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" id="formrow-inputCity" value="{{@$user->password}}" placeholder="Enter Your Password">
+                                        <input type="password" name="password" class="form-control" id="formrow-inputCity" placeholder="Enter Your Password">
                                         @error('password')
                                         <code>*{{$message}}</code>
                                         @enderror

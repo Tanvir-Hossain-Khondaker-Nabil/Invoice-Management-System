@@ -89,7 +89,7 @@
                      <i class="fa fa-plus text-muted"></i>
                   </div>
                   <div class="sub-price">
-                     <small>VAT ({{ $tax->tax }}%)</small>
+                     <small>VAT ({{ @$tax->tax }}%)</small>
                      <span class="text-inverse">{{ @$invoice->vat }}</span>
                   </div>
                </div>

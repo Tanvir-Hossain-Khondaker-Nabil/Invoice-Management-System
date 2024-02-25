@@ -26,7 +26,7 @@ class PDFController extends Controller
         $tax = Tax::select('tax')->first();
 
         foreach ($contents as $content) {
-            cart::setTax($content->rowId, $tax->tax);
+            cart::setTax($content->rowId, @$tax->tax ? @$tax->tax : '18' );
         }
 
         $invoice_number = $request->invoice_number;

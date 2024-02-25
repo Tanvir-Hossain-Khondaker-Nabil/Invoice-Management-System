@@ -29,9 +29,12 @@ class TaxController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'tax'=>'required',
+        ]);
         $tax = Tax::pluck('id')->count();
 
-        if ($tax > 0 && $tax < 1) {
+        if ( $tax < 1) {
             Tax::create($request->all());
         }        
 

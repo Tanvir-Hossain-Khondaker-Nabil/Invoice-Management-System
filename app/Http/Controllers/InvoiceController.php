@@ -20,13 +20,13 @@ class InvoiceController extends Controller
     {
         $date = date('M');
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
 
     public function YearlyInvoice($id)
     {
-        $invoices = Invoice::where('date',$id)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('date',$id)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
 
@@ -38,10 +38,10 @@ class InvoiceController extends Controller
         $tax = Tax::select('tax')->first();    
         $invoice = Invoice::select('id')->latest()->first();
         
-        if($invoice->id > 0){
+        if(@$invoice->id > 0){
             $invoice_num = $invoice->id + '1'.date('dmy');
         }else{
-            $invoice_num = 'INV#'.'1'.date('dmy');
+            $invoice_num = '1'.date('dmy');
         }
 
         $products = Product::get();
@@ -79,8 +79,9 @@ class InvoiceController extends Controller
         $invoices = Invoice::where('invoice_number',$id)->get();
 
         $invoice = Invoice::where('invoice_number',$id)->first();
-
+        
         $cus_id = $invoice->customer_id;
+        
         $customer = Customer::where('id',$cus_id)->first();
 
         return view('backend.modules.invoice.invoice',compact('invoices','invoice','customer','tax'));
@@ -132,7 +133,7 @@ class InvoiceController extends Controller
     {
         $date = "Jan";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
 
@@ -140,7 +141,7 @@ class InvoiceController extends Controller
     {
         $date = "Fed";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
 
@@ -148,70 +149,70 @@ class InvoiceController extends Controller
     {
         $date = "Mar";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
     public function AprilInvoice()
     {
         $date = "Apr";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
     public function MayInvoice()
     {
         $date = "May";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
     public function JuneInvoice()
     {
         $date = "June";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
     public function JulyInvoice()
     {
         $date = "July";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
     public function AugestInvoice()
     {
         $date = "Aug";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
     public function SeptemberInvoice()
     {
         $date = "Sept";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
     public function OctoberInvoice()
     {
         $date = "Oct";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
     public function NovemberInvoice()
     {
         $date = "Nov";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
     public function DecemberInvoice()
     {
         $date = "Dec";
         $year = date('Y');
-        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->latest()->get();
+        $invoices = Invoice::where('month',$date)->where('date',$year)->select('invoice_number','pdf','customer_id','total')->orderBy('invoice_number', 'desc')->groupBy('invoice_number')->groupBy('pdf')->groupBy('total')->groupBy('customer_id')->get();
         return view ('backend.modules.invoice.index',compact('invoices'));
     }
 }
